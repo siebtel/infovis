@@ -6,48 +6,25 @@ var g = new dagreD3.graphlib.Graph({
 .setDefaultEdgeLabel(function() {
   return {};
 });
-
+var original_sentence = 'To be or not to be, that is the question';
+tokens = ['To',  'be', 'or', 'not', 'to', 'be', ',', 'that', 'is', 'the', 'question' ]
 // Here we're setting the nodes
 g.setNode('original sentence', {
-label: 'To be or not to be, that is the question'
+label: original_sentence
 });
 g.setNode('sentence vector', {
-label: 'To be or not to be, that is the question',
+label: original_sentence,
 style: 'fill: aqua'
 });
-g.setNode('token 1', {
-label: 'To'
-});
-g.setNode('token 2', {
-label: 'be'
-});
-g.setNode('token 3', {
-label: 'or'
-});
-g.setNode('token 4', {
-label: 'not'
-});
-g.setNode('token 5', {
-label: 'to'
-});
-g.setNode('token 6', {
-label: 'be'
-});
-g.setNode('token 7', {
-label: ','
-});
-g.setNode('token 8', {
-label: 'that'
-});
-g.setNode('token 9', {
-label: 'is'
-});
-g.setNode('token 10', {
-label: 'the'
-});
-g.setNode('token 11', {
-label: 'question'
-});
+
+tokens.forEach(setTokens);
+
+function setTokens(item, index) {
+  var index = index +1;
+  g.setNode('token'.concat(index.toString()), {
+    label: item
+    });
+}
 g.setNode('group', {
 label: 'Tokenizer',
 clusterLabelPos: 'top',
@@ -67,30 +44,18 @@ style: 'fill: #5f9488'
 g.setParent('top_group', 'group');
 g.setParent('bottom_group', 'group');
 g.setParent('sentence vector', 'top_group');
-g.setParent('token 1', 'bottom_group');
-g.setParent('token 2', 'bottom_group');
-g.setParent('token 3', 'bottom_group');
-g.setParent('token 4', 'bottom_group');
-g.setParent('token 5', 'bottom_group');
-g.setParent('token 6', 'bottom_group');
-g.setParent('token 7', 'bottom_group');
-g.setParent('token 8', 'bottom_group');
-g.setParent('token 9', 'bottom_group');
-g.setParent('token 10', 'bottom_group');
-g.setParent('token 11', 'bottom_group');
+var i;
+for (i = 0; i < tokens.length; i++) {
+  var index = i + 1
+  g.setParent('token'.concat(index.toString()), 'bottom_group');
+}
 // Set up edges, no special attributes.
 g.setEdge('original sentence', 'sentence vector');
-g.setEdge('sentence vector', 'token 1');
-g.setEdge('sentence vector', 'token 2');
-g.setEdge('sentence vector', 'token 3');
-g.setEdge('sentence vector', 'token 4');
-g.setEdge('sentence vector', 'token 5');
-g.setEdge('sentence vector', 'token 6');
-g.setEdge('sentence vector', 'token 7');
-g.setEdge('sentence vector', 'token 8');
-g.setEdge('sentence vector', 'token 9');
-g.setEdge('sentence vector', 'token 10');
-g.setEdge('sentence vector', 'token 11');
+for (i = 0; i < tokens.length; i++) {
+  var index = i + 1
+  g.setEdge('sentence vector','token'.concat(index.toString()));
+}
+
 
 g.nodes().forEach(function(v) {
 var node = g.node(v);

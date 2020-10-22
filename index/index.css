@@ -28,6 +28,7 @@ section p {
   fill: #00ffd0;
   stroke: #999;
   stroke-width: 1.5px;
+  margin: 0 auto;
 }
 text {
   font-weight: 300;
@@ -38,6 +39,7 @@ text {
   stroke: #999;
   fill: #fff;
   stroke-width: 1.5px;
+  margin: 0 auto;
 }
 .edgePath path {
   stroke: #333;
@@ -46,8 +48,8 @@ text {
 
 svg {
   border: 1px solid #ccc;
-  overflow: hidden;
-  margin: 0 auto;
+  overflow: visible;
+  margin: 0px auto;
 }
 
 pre {

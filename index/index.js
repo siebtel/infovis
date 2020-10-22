@@ -71,15 +71,12 @@ svg1.append('rect')//Segundo botão p/ acionar
 
 function setNodesPreProcessing() {//setNodesPartOne
   // Here we're setting the nodes
-  g.setNode('original sentence', {
-    label: original_sentence
-  });
   g.setNode('sentence vector', {
     label: original_sentence,
     style: 'fill: aqua'
   });
 
-  g.setNode('pre_processing', {
+  g.setNode('pre_processing', {//
     label: 'Pre Processing',
     clusterLabelPos: 'top',
     style: 'fill: white'
@@ -89,9 +86,9 @@ function setNodesPreProcessing() {//setNodesPartOne
     clusterLabelPos: 'bottom',
     style: 'fill: #ffd47f'
   });
-  g.setParent('array_form', 'pre_processing');
+  g.setParent('array_form', 'pre_processing');//
   g.setParent('sentence vector', 'array_form');
-  g.setEdge('original sentence', 'sentence vector');
+  g.setEdge('original sentence', 'sentence vector');//
 
   g.nodes().forEach(function (v) {
     var node = g.node(v);
@@ -102,39 +99,39 @@ function setNodesPreProcessing() {//setNodesPartOne
 
 function setNodesTokenization() {//setNodesPartTwo
   tokens.forEach(setTokenNode);
-    lowcase_tokens.forEach(setTokenNode);
-   
-    g.setNode('tokenization', {
-      label: 'Tokens',
-      style: 'fill: #5f9488'
-    });
-    g.setNode('low_case', {
-      label: 'Lower case',
-      style: 'fill: #5f9488'
-    });
-    g.setParent('tokenization', 'pre_processing');
-    g.setParent('low_case', 'pre_processing');
-    setNodesPreProcessing();//setNodesPartOne
-    var i;
-    for (i = 0; i < tokens.length; i++) {
-      g.setParent('token'.concat(i.toString()), 'tokenization');
-    }
-    for (i = tokens.length; i < tokens.length + lowcase_tokens.length; i++) {
-      g.setParent('token'.concat(i.toString()), 'low_case');
-    }
-    // Set up edges, no special attributes.
-    for (i = 0; i < tokens.length; i++) {
-      g.setEdge('sentence vector', 'token'.concat(i.toString()));
-    }
-    for (i = 0; i < tokens.length; i++) {
-      var lowcase_index = i + tokens.length;
-      g.setEdge('token'.concat(i.toString()), 'token'.concat(lowcase_index.toString()));
-    }
-    g.nodes().forEach(function (v) {
-      var node = g.node(v);
-      // Round the corners of the nodes
-      node.rx = node.ry = 5;
-    });
+  lowcase_tokens.forEach(setTokenNode);
+
+  g.setNode('tokenization', {
+    label: 'Tokens',
+    style: 'fill: #5f9488'
+  });
+  g.setNode('low_case', {
+    label: 'Lower case',
+    style: 'fill: #5f9488'
+  });
+  g.setParent('tokenization', 'pre_processing');
+  g.setParent('low_case', 'pre_processing');
+  setNodesPreProcessing();//setNodesPartOne
+  var i;
+  for (i = 0; i < tokens.length; i++) {
+    g.setParent('token'.concat(i.toString()), 'tokenization');
+  }
+  for (i = tokens.length; i < tokens.length + lowcase_tokens.length; i++) {
+    g.setParent('token'.concat(i.toString()), 'low_case');
+  }
+  // Set up edges, no special attributes.
+  for (i = 0; i < tokens.length; i++) {
+    g.setEdge('sentence vector', 'token'.concat(i.toString()));
+  }
+  for (i = 0; i < tokens.length; i++) {
+    var lowcase_index = i + tokens.length;
+    g.setEdge('token'.concat(i.toString()), 'token'.concat(lowcase_index.toString()));
+  }
+  g.nodes().forEach(function (v) {
+    var node = g.node(v);
+    // Round the corners of the nodes
+    node.rx = node.ry = 5;
+  });
 }
 
 function setTokenNode(item, index, arr) {

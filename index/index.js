@@ -25,7 +25,7 @@ g.setNode('original sentence', {//Exemplo escolhido
 });
 
 var svg1 = d3.select("svg");
-svg1.append('rect')//Primeiro botão para acionar
+svg1.append('rect')//Primeiro botão p/ acionar
   .attr('width', 50)
   .attr('height', 20)
   .attr('fill', 'blue')
@@ -42,10 +42,7 @@ svg1.append('rect')//Primeiro botão para acionar
 
     render(d3.select("svg g"), g);
 
-    // Center the graph
-    var xCenterOffset = (svg1.attr("width") - g.graph().width) / 2;
-    svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
-    svg1.attr("height", g.graph().height + 40);
+    centerGraph();
 
     d3.select(this).remove();
   });
@@ -67,10 +64,7 @@ svg1.append('rect')//Segundo botão p/ acionar
 
     render(d3.select("svg g"), g);
 
-    // Center the graph
-    var xCenterOffset = (svg1.attr("width") - g.graph().width) / 2;
-    svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
-    svg1.attr("height", g.graph().height + 40);
+    centerGraph();
 
     d3.select(this).remove();
   });
@@ -161,6 +155,13 @@ g.nodes().forEach(function (v) {
   node.rx = node.ry = 5;
 });
 
+// Center the graph
+function centerGraph() {
+  var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
+  svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
+  svg.attr("height", g.graph().height + 40);
+}
+
 // Create the renderer
 var render = new dagreD3.render();
 
@@ -171,7 +172,4 @@ var svg = d3.select("svg"),
 // Run the renderer. This is what draws the final graph.
 render(d3.select("svg g"), g);
 
-// Center the graph
-var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
-svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
-svg.attr("height", g.graph().height + 40);
+centerGraph();

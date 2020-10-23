@@ -31,6 +31,7 @@ function setNodesTokenization() {//setNodesPartTwo
 	tokens.forEach(setTokenNode);
 	g.setNode('tokenization', {
 	  label: 'Tokens',
+	  clusterLabelPos: 'top',
 	  style: 'fill: #5f9488'
 	});
 	// Set the parents to define which nodes belong to which cluster
@@ -54,6 +55,7 @@ function setLowcaseTokens() {
 	lowcase_tokens.forEach(setTokenNode);
 	g.setNode('low_case', {
 		label: 'Lower case',
+		clusterLabelPos: 'top',
 		style: 'fill: #5f9488'
 	  });
 	// Set the parents to define which nodes belong to which cluster
@@ -78,11 +80,12 @@ function setNoSpecialCharTokens() {
 	no_special_char_tokens.forEach(setTokenNode);
 	g.setNode('no_special_character_token', {
 		label: 'Removing Special Characters',
+		clusterLabelPos: 'top',
 		style: 'fill: #5f9488'
 	  });
 	// Set the parents to define which nodes belong to which cluster
 	g.setParent('no_special_character_token', 'pre_processing');
-	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length;
 	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + no_special_char_tokens.length; i++) {
 		g.setParent('token'.concat(i.toString()), 'no_special_character_token');
 	}
@@ -102,11 +105,51 @@ function setNoSpecialCharTokens() {
 		node.rx = node.ry = 5;
 	});
 }
+function setTokenWithoutStopwords() {
+	// Here we're setting the nodes
+	tokens_with_removed_stopwords.forEach(setTokenNode);
+	g.setNode('stopwords_removal', {
+		label: 'Stopwords Removal',
+		clusterLabelPos: 'top',
+		style: 'fill: #5f9488'
+	  });
+	// Set the parents to define which nodes belong to which cluster
+	g.setParent('stopwords_removal', 'pre_processing');
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length + no_special_char_tokens.length;
+	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + tokens_with_removed_stopwords.length; i++) {
+		g.setParent('token'.concat(i.toString()), 'stopwords_removal');
+	}
+	// Set up edges, no special attributes.
+	var count = tokens_with_removed_stopwords.length;
+	for (i = 0; i < tokens.length; i++) {
+		if (stopwords.includes(no_special_char_tokens[i])){
+			continue;
+		}
+		else{
+			result = tokens_with_removed_stopwords.length - count;
+			if (result == tokens_with_removed_stopwords.length) {
+				break;
+			} else {
+				count = count - 1;
+				var tokens_with_removed_stopwords_index = result + sum_of_nodes_of_tokens;
+				var no_special_character_token_index = i + lowcase_tokens.length + tokens.length;
+				g.setEdge('token'.concat(no_special_character_token_index.toString()), 'token'.concat(tokens_with_removed_stopwords_index.toString()));
+			}
+		}
+	}
+	// Round the corners of the nodes
+	g.nodes().forEach(function(v) {
+		var node = g.node(v);
+		node.rx = node.ry = 5;
+	});
+}
 function setTokenNode(item, index, arr) {
 	if (arr == lowcase_tokens) {
-	  var index = index + tokens.length;
+		var index = index + tokens.length;
 	} else if (arr == no_special_char_tokens) {
-	  var index = index + lowcase_tokens.length + tokens.length;
+		var index = index + lowcase_tokens.length + tokens.length;
+	} else if (arr == tokens_with_removed_stopwords) {
+		var index = index + lowcase_tokens.length + tokens.length + no_special_char_tokens.length;
 	}
   
 	g.setNode('token'.concat(index.toString()), {
@@ -127,9 +170,9 @@ var g = new dagreD3.graphlib.Graph({
   .setDefaultEdgeLabel(function () {
     return {};
   });
-var original_sentence = 'Computer Science is no more about computers than Astronomy is about telescopes.';
-var tokens = ['Computer', 'Science', 'is', 'no', 'more', 'about', 'computers', 'than', 'Astronomy', 'is', 'about', 'telescopes.'];
-var lowcase_tokens = ['computer', 'science', 'is', 'no', 'more', 'about', 'computers', 'than', 'astronomy', 'is', 'about', 'telescopes.'];
+var original_sentence = '"Computer Science is no more about computers than Astronomy is about telescopes".';
+var tokens = ['"Computer', 'Science', 'is', 'no', 'more', 'about', 'computers', 'than', 'Astronomy', 'is', 'about', 'telescopes".'];
+var lowcase_tokens = ['"computer', 'science', 'is', 'no', 'more', 'about', 'computers', 'than', 'astronomy', 'is', 'about', 'telescopes".'];
 var no_special_char_tokens = ['computer', 'science', 'is', 'no', 'more', 'about', 'computers', 'than', 'astronomy', 'is', 'about', 'telescopes'];
 var tokens_with_removed_stopwords = ['computer', 'science', 'computers', 'astronomy', 'telescopes'];
 var stopwords = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 'yourself', 'yourselves',
@@ -184,6 +227,7 @@ svg1.append('rect')//Segundo botão p/ acionar
     setNodesTokenization();
 	setLowcaseTokens();
 	setNoSpecialCharTokens();
+	setTokenWithoutStopwords();
     render(d3.select("svg g"), g);
 
     centerGraph();

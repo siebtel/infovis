@@ -11,7 +11,7 @@ function setNodesPreProcessing() {//setNodesPartOne
 		style: 'fill: white'
 	});
 	g.setNode('array_form', {
-		label: 'array form',
+		label: 'Sentence in array',
 		clusterLabelPos: 'bottom',
 		style: 'fill: #ffd47f'
 	});
@@ -142,6 +142,32 @@ function setTokenWithoutStopwords() {
 		node.rx = node.ry = 5;
 	});
 }
+function setStemmedTokens() {
+	// Here we're setting the nodes
+	stemmed_tokens.forEach(setTokenNode);
+	g.setNode('stemmed_tokens', {
+		label: 'Stemming',
+		clusterLabelPos: 'top',
+		style: 'fill: #5f9488'
+	});
+	// Set the parents to define which nodes belong to which cluster
+	g.setParent('stemmed_tokens', 'pre_processing');
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length + no_special_char_tokens.length + tokens_with_removed_stopwords.length;
+	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + stemmed_tokens.length; i++) {
+		g.setParent('token'.concat(i.toString()), 'stemmed_tokens');
+	}
+	// Set up edges, no special attributes.
+	for (i = 0; i < stemmed_tokens.length; i++) {
+		var stemmed_tokens_index = i + sum_of_nodes_of_tokens;
+		var tokens_with_removed_stopwords_index = i + sum_of_nodes_of_tokens - tokens_with_removed_stopwords.length;
+		g.setEdge('token'.concat(tokens_with_removed_stopwords_index.toString()), 'token'.concat(stemmed_tokens_index.toString()));
+	}
+	// Round the corners of the nodes
+	g.nodes().forEach(function (v) {
+		var node = g.node(v);
+		node.rx = node.ry = 5;
+	});
+}
 function setTokenNode(item, index, arr) {
 	if (arr == lowcase_tokens) {
 		var index = index + tokens.length;
@@ -149,6 +175,8 @@ function setTokenNode(item, index, arr) {
 		var index = index + lowcase_tokens.length + tokens.length;
 	} else if (arr == tokens_with_removed_stopwords) {
 		var index = index + lowcase_tokens.length + tokens.length + no_special_char_tokens.length;
+	} else if (arr == stemmed_tokens) {
+		var index = index + lowcase_tokens.length + tokens.length + no_special_char_tokens.length + tokens_with_removed_stopwords.length;
 	}
 
 	g.setNode('token'.concat(index.toString()), {
@@ -160,6 +188,22 @@ function centerGraph() {
 	svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
 	svg.attr("height", g.graph().height + 40);
 }
+//##########################################################Globals##########################################################
+var original_sentence = '"Computer Science is no more about computers than Astronomy is about telescopes".';
+var tokens = ['"Computer', 'Science', 'is', 'no', 'more', 'about', 'computers', 'than', 'Astronomy', 'is', 'about', 'telescopes".'];
+var lowcase_tokens = ['"computer', 'science', 'is', 'no', 'more', 'about', 'computers', 'than', 'astronomy', 'is', 'about', 'telescopes".'];
+var no_special_char_tokens = ['computer', 'science', 'is', 'no', 'more', 'about', 'computers', 'than', 'astronomy', 'is', 'about', 'telescopes'];
+var tokens_with_removed_stopwords = ['computer', 'science', 'computers', 'astronomy', 'telescopes'];
+var stemmed_tokens = ['comput', 'scienc', 'comput', 'astronomi', 'telescop'];
+var stopwords = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 'yourself', 'yourselves',
+	'he', 'him', 'his', 'himself', 'she', 'her', 'hers', 'herself', 'it', 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves',
+	'what', 'which', 'who', 'whom', 'this', 'that', 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has',
+	'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at',
+	'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up',
+	'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all',
+	'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's',
+	't', 'can', 'will', 'just', 'don', 'should', 'now'];
+
 // --------------------------------------------------------main------------------------------------------------------
 // Create the input graph
 var g = new dagreD3.graphlib.Graph({
@@ -169,19 +213,6 @@ var g = new dagreD3.graphlib.Graph({
 	.setDefaultEdgeLabel(function () {
 		return {};
 	});
-var original_sentence = '"Computer Science is no more about computers than Astronomy is about telescopes".';
-var tokens = ['"Computer', 'Science', 'is', 'no', 'more', 'about', 'computers', 'than', 'Astronomy', 'is', 'about', 'telescopes".'];
-var lowcase_tokens = ['"computer', 'science', 'is', 'no', 'more', 'about', 'computers', 'than', 'astronomy', 'is', 'about', 'telescopes".'];
-var no_special_char_tokens = ['computer', 'science', 'is', 'no', 'more', 'about', 'computers', 'than', 'astronomy', 'is', 'about', 'telescopes'];
-var tokens_with_removed_stopwords = ['computer', 'science', 'computers', 'astronomy', 'telescopes'];
-var stopwords = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 'yourself', 'yourselves',
-	'he', 'him', 'his', 'himself', 'she', 'her', 'hers', 'herself', 'it', 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves',
-	'what', 'which', 'who', 'whom', 'this', 'that', 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has',
-	'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at',
-	'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up',
-	'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all',
-	'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's',
-	't', 'can', 'will', 'just', 'don', 'should', 'now'];
 
 g.setNode('original sentence', {//Exemplo escolhido
 	label: original_sentence
@@ -242,6 +273,7 @@ button1.attr('width', g.graph().width)//Primeiro botão p/ acionar
 				setLowcaseTokens();
 				setNoSpecialCharTokens();
 				setTokenWithoutStopwords();
+				setStemmedTokens();
 				render(d3.select("svg g"), g);
 
 				centerGraph();

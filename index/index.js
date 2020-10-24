@@ -232,7 +232,7 @@ button1.attr('width', g.graph().width)//Primeiro botão p/ acionar
 			.attr('height', button1.attr('height'))
 			.attr('fill', 'blue')
 			.attr('x', button1.attr('x'))
-			.attr('y', g.graph().height - button1.attr('y')*3 -5)//chegou perto=g.graph().height - button1.attr('y')*3), oute g.graph().height - button1.attr('height')*2
+			.attr('y', g.graph().height - button1.attr('y')*3 -5)
 			.on('mousedown', function () {
 
 				var svg = d3.select("svg > g");//limpar renderizacao anterior

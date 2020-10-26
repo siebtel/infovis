@@ -58,6 +58,11 @@ function setLowcaseTokens() {
 		clusterLabelPos: 'top',
 		style: 'fill: #5f9488'
 	});
+	g.setNode('tokenization', {//clarear a etapa anterior
+		label: 'Tokens',
+		clusterLabelPos: 'top',
+		style: 'fill: white'
+	});
 	// Set the parents to define which nodes belong to which cluster
 	g.setParent('low_case', 'pre_processing');
 	for (i = tokens.length; i < tokens.length + lowcase_tokens.length; i++) {
@@ -81,6 +86,16 @@ function setNoSpecialCharTokens() {
 		label: 'Removing Special Characters',
 		clusterLabelPos: 'top',
 		style: 'fill: #5f9488'
+	});
+	g.setNode('low_case', {//clarear a etapa anterior
+		label: 'Lower case',
+		clusterLabelPos: 'top',
+		style: 'fill: white'
+	});
+	g.setNode('tokenization', {//clarear a etapa anterior
+		label: 'Tokens',
+		clusterLabelPos: 'top',
+		style: 'fill: white'
 	});
 	// Set the parents to define which nodes belong to which cluster
 	g.setParent('no_special_character_token', 'pre_processing');
@@ -111,6 +126,21 @@ function setTokenWithoutStopwords() {
 		label: 'Stopwords Removal',
 		clusterLabelPos: 'top',
 		style: 'fill: #5f9488'
+	});
+	g.setNode('no_special_character_token', {//clarear a etapa anterior
+		label: 'Removing Special Characters',
+		clusterLabelPos: 'top',
+		style: 'fill: white'
+	});
+	g.setNode('low_case', {//clarear a etapa anterior
+		label: 'Lower case',
+		clusterLabelPos: 'top',
+		style: 'fill: white'
+	});
+	g.setNode('tokenization', {//clarear a etapa anterior
+		label: 'Tokens',
+		clusterLabelPos: 'top',
+		style: 'fill: white'
 	});
 	// Set the parents to define which nodes belong to which cluster
 	g.setParent('stopwords_removal', 'pre_processing');
@@ -149,6 +179,26 @@ function setStemmedTokens() {
 		label: 'Stemming',
 		clusterLabelPos: 'top',
 		style: 'fill: #5f9488'
+	});
+	g.setNode('stopwords_removal', {//clarear a etapa anterior
+		label: 'Stopwords Removal',
+		clusterLabelPos: 'top',
+		style: 'fill: white'
+	});
+	g.setNode('no_special_character_token', {//clarear a etapa anterior
+		label: 'Removing Special Characters',
+		clusterLabelPos: 'top',
+		style: 'fill: white'
+	});
+	g.setNode('low_case', {//clarear a etapa anterior
+		label: 'Lower case',
+		clusterLabelPos: 'top',
+		style: 'fill: white'
+	});
+	g.setNode('tokenization', {//clarear a etapa anterior
+		label: 'Tokens',
+		clusterLabelPos: 'top',
+		style: 'fill: white'
 	});
 	// Set the parents to define which nodes belong to which cluster
 	g.setParent('stemmed_tokens', 'pre_processing');

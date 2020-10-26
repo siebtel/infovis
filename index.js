@@ -3,7 +3,7 @@ function setNodesPreProcessing() {//setNodesPartOne
 	// Here we're setting the nodes
 	g.setNode('sentence vector', {
 		label: original_sentence,
-		style: 'fill: aqua'
+		style: 'fill: white'
 	});
 	g.setNode('pre_processing', {//
 		label: 'Pre Processing',
@@ -188,6 +188,17 @@ function centerGraph() {
 	svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
 	svg.attr("height", g.graph().height + 40);
 }
+
+function display(stepCallback){
+	var svg = d3.select("svg > g");//limpar renderizacao anterior
+	svg.selectAll("*").remove();
+	d3.selectAll("g.nodes")
+		.attr('fill', "white")
+	stepCallback();
+	render(d3.select("svg g"), g);
+	centerGraph();
+	d3.select(this).remove();
+}
 //##########################################################Globals##########################################################
 var original_sentence = '"Computer Science is no more about computers than Astronomy is about telescopes".';
 var tokens = ['"Computer', 'Science', 'is', 'no', 'more', 'about', 'computers', 'than', 'Astronomy', 'is', 'about', 'telescopes".'];
@@ -238,6 +249,8 @@ centerGraph();
 
 var svg1 = d3.select("svg");
 
+
+/*
 var button1 = svg1.append('rect');
 var button2 = svg1.append('rect');
 
@@ -287,8 +300,4 @@ button1.attr('width', g.graph().width)//Primeiro botão p/ acionar
 	});
 
 button1.transition().attr('opacity', 0.1).duration(1000);
-
-
-
-
-
+*/

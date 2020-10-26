@@ -25,7 +25,7 @@ section p {
 }
 
 .clusters rect {
-  fill: #00ffd0;
+  fill: #fff;
   stroke: #999;
   stroke-width: 1.5px;
   margin: 0 auto;

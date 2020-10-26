@@ -5,6 +5,33 @@
     <h1>Pre-processing steps</h1>
 </head>
 <body>
+    <div id="option">
+        <input name="updateButton" 
+            type="button" 
+            value="Input" 
+            onclick="display(setNodesPreProcessing)" />
+        <input name="updateButton" 
+            type="button" 
+            value="Tokenization" 
+            onclick="display(setNodesTokenization)" />
+        <input name="updateButton" 
+            type="button" 
+            value="Lowcase" 
+            onclick="display(setLowcaseTokens)" />
+        <input name="updateButton" 
+            type="button" 
+            value="Special Characters" 
+            onclick="display(setNoSpecialCharTokens)" />
+        <input name="updateButton" 
+            type="button" 
+            value="Stopwords" 
+            onclick="display(setTokenWithoutStopwords)" />
+        <input name="updateButton" 
+            type="button" 
+            value="Stemming" 
+            onclick="display(setStemmedTokens)" />
+
+        </div>
     <svg id="svg-canvas" width=1080 height=920></svg>
 </body>
 

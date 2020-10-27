@@ -3,12 +3,12 @@ function setNodesPreProcessing() {//setNodesPartOne
 	// Here we're setting the nodes
 	g.setNode('sentence vector', {
 		label: original_sentence,
-		style: 'fill: white'
+		style: 'fill: #00ffd0'
 	});
 	g.setNode('pre_processing', {//
 		label: 'Pre Processing',
 		clusterLabelPos: 'top',
-		style: 'fill: white'
+		style: 'fill:white'
 	});
 	g.setNode('array_form', {
 		label: 'Sentence in array',
@@ -25,10 +25,59 @@ function setNodesPreProcessing() {//setNodesPartOne
 		var node = g.node(v);
 		node.rx = node.ry = 5;
 	});
+
+	//Removendo passo Tokenization
+	for (i = 0; i < tokens.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'tokenization');
+	}
+	g.removeNode('tokenization');
+
+	//Removendo passo LowCaseTokens
+	for (i = tokens.length; i < tokens.length + lowcase_tokens.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'low_case');
+	}
+	g.removeNode('low_case');
+
+	//Removendo passo NoSpecialCharTokens
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length;
+	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + no_special_char_tokens.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'no_special_character_token');
+	}
+	g.removeNode('no_special_character_token');
+
+	//Removendo passo TokenWithoutStopwords
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length + no_special_char_tokens.length;
+	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + tokens_with_removed_stopwords.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'stopwords_removal');
+	}
+	g.removeNode('stopwords_removal');
+
+	//Removendo passo StemmedTokens
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length + no_special_char_tokens.length + tokens_with_removed_stopwords.length;
+	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + stemmed_tokens.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'stemmed_tokens');
+	}
+	g.removeNode('stemmed_tokens');
+
 }
 function setNodesTokenization() {//setNodesPartTwo
-	// Here we're setting the nodes
-	tokens.forEach(setTokenNode);
+	//Removendo passo NodesPreProcessing - exclusao do seu anterior imediato
+	g.removeNode('sentence vector');
+	g.removeNode('pre_processing');
+	g.removeNode('array_form');
+	setNodesPreProcessing();//chamando novamente
+	g.setNode('sentence vector', {//clareando
+		label: original_sentence,
+		style: 'fill: white'
+	});
+
+	g.setNode('pre_processing', {//clareando
+		label: 'Pre Processing',
+		clusterLabelPos: 'top',
+		style: 'fill:white'
+	});
+
+	tokens.forEach(setTokenNodeColor);
 	g.setNode('tokenization', {
 		label: 'Tokens',
 		clusterLabelPos: 'top',
@@ -49,10 +98,45 @@ function setNodesTokenization() {//setNodesPartTwo
 		var node = g.node(v);
 		node.rx = node.ry = 5;
 	});
+
+	//Removendo passo LowCaseTokens
+	for (i = tokens.length; i < tokens.length + lowcase_tokens.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'low_case');
+	}
+	g.removeNode('low_case');
+
+	//Removendo passo NoSpecialCharTokens
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length;
+	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + no_special_char_tokens.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'no_special_character_token');
+	}
+	g.removeNode('no_special_character_token');
+
+	//Removendo passo TokenWithoutStopwords
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length + no_special_char_tokens.length;
+	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + tokens_with_removed_stopwords.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'stopwords_removal');
+	}
+	g.removeNode('stopwords_removal');
+
+	//Removendo passo StemmedTokens
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length + no_special_char_tokens.length + tokens_with_removed_stopwords.length;
+	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + stemmed_tokens.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'stemmed_tokens');
+	}
+	g.removeNode('stemmed_tokens');
 }
 function setLowcaseTokens() {
+	//Removendo passo Tokenization, o passo anterior imediato
+	var i;
+	for (i = 0; i < tokens.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'tokenization');
+	}
+	g.removeNode('tokenization');
+	setNodesTokenization();//e recriando
+
 	// Here we're setting the nodes
-	lowcase_tokens.forEach(setTokenNode);
+	lowcase_tokens.forEach(setTokenNodeColor);
 	g.setNode('low_case', {
 		label: 'Lower case',
 		clusterLabelPos: 'top',
@@ -63,6 +147,8 @@ function setLowcaseTokens() {
 		clusterLabelPos: 'top',
 		style: 'fill: white'
 	});
+	tokens.forEach(setTokenNode);//clarear os nodes anteriores
+	
 	// Set the parents to define which nodes belong to which cluster
 	g.setParent('low_case', 'pre_processing');
 	for (i = tokens.length; i < tokens.length + lowcase_tokens.length; i++) {
@@ -78,25 +164,52 @@ function setLowcaseTokens() {
 		var node = g.node(v);
 		node.rx = node.ry = 5;
 	});
+
+	//Removendo passo NoSpecialCharTokens
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length;
+	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + no_special_char_tokens.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'no_special_character_token');
+	}
+	g.removeNode('no_special_character_token');
+
+	//Removendo passo TokenWithoutStopwords
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length + no_special_char_tokens.length;
+	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + tokens_with_removed_stopwords.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'stopwords_removal');
+	}
+	g.removeNode('stopwords_removal');
+
+	//Removendo passo StemmedTokens
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length + no_special_char_tokens.length + tokens_with_removed_stopwords.length;
+	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + stemmed_tokens.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'stemmed_tokens');
+	}
+	g.removeNode('stemmed_tokens');
+
 }
 function setNoSpecialCharTokens() {
+	//Removendo o passo anterior imediato 
+	for (i = tokens.length; i < tokens.length + lowcase_tokens.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'low_case');
+	}
+	g.removeNode('low_case');
+	setLowcaseTokens();//e recriando
+
 	// Here we're setting the nodes
-	no_special_char_tokens.forEach(setTokenNode);
+	no_special_char_tokens.forEach(setTokenNodeColor);
 	g.setNode('no_special_character_token', {
 		label: 'Removing Special Characters',
 		clusterLabelPos: 'top',
 		style: 'fill: #5f9488'
 	});
+
 	g.setNode('low_case', {//clarear a etapa anterior
 		label: 'Lower case',
 		clusterLabelPos: 'top',
 		style: 'fill: white'
 	});
-	g.setNode('tokenization', {//clarear a etapa anterior
-		label: 'Tokens',
-		clusterLabelPos: 'top',
-		style: 'fill: white'
-	});
+	lowcase_tokens.forEach(setTokenNode);//clarear os nodes anteriores
+
 	// Set the parents to define which nodes belong to which cluster
 	g.setParent('no_special_character_token', 'pre_processing');
 	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length;
@@ -118,10 +231,34 @@ function setNoSpecialCharTokens() {
 		var node = g.node(v);
 		node.rx = node.ry = 5;
 	});
+
+	//Removendo passo TokenWithoutStopwords
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length + no_special_char_tokens.length;
+	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + tokens_with_removed_stopwords.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'stopwords_removal');
+	}
+	g.removeNode('stopwords_removal');
+
+	//Removendo passo StemmedTokens
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length + no_special_char_tokens.length + tokens_with_removed_stopwords.length;
+	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + stemmed_tokens.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'stemmed_tokens');
+	}
+	g.removeNode('stemmed_tokens');
+
 }
 function setTokenWithoutStopwords() {
+	//removendo passo anterior
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length;
+	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + no_special_char_tokens.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'no_special_character_token');
+	}
+	g.removeNode('no_special_character_token');
+	//g.removeNode('no_special_char_tokens');
+	setNoSpecialCharTokens();//e recriando
+
 	// Here we're setting the nodes
-	tokens_with_removed_stopwords.forEach(setTokenNode);
+	tokens_with_removed_stopwords.forEach(setTokenNodeColor);
 	g.setNode('stopwords_removal', {
 		label: 'Stopwords Removal',
 		clusterLabelPos: 'top',
@@ -132,16 +269,8 @@ function setTokenWithoutStopwords() {
 		clusterLabelPos: 'top',
 		style: 'fill: white'
 	});
-	g.setNode('low_case', {//clarear a etapa anterior
-		label: 'Lower case',
-		clusterLabelPos: 'top',
-		style: 'fill: white'
-	});
-	g.setNode('tokenization', {//clarear a etapa anterior
-		label: 'Tokens',
-		clusterLabelPos: 'top',
-		style: 'fill: white'
-	});
+	no_special_char_tokens.forEach(setTokenNode);//clarear os nodes anteriores
+
 	// Set the parents to define which nodes belong to which cluster
 	g.setParent('stopwords_removal', 'pre_processing');
 	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length + no_special_char_tokens.length;
@@ -171,10 +300,24 @@ function setTokenWithoutStopwords() {
 		var node = g.node(v);
 		node.rx = node.ry = 5;
 	});
+	//Removendo passo StemmedTokens
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length + no_special_char_tokens.length + tokens_with_removed_stopwords.length;
+	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + stemmed_tokens.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'stemmed_tokens');
+	}
+	g.removeNode('stemmed_tokens');
 }
 function setStemmedTokens() {
+	//removendo o passo anterior
+	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length + no_special_char_tokens.length;
+	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + tokens_with_removed_stopwords.length; i++) {
+		g.removeNode('token'.concat(i.toString()), 'stopwords_removal');
+	}
+	g.removeNode('stopwords_removal');
+	setTokenWithoutStopwords();//e recriando
+
 	// Here we're setting the nodes
-	stemmed_tokens.forEach(setTokenNode);
+	stemmed_tokens.forEach(setTokenNodeColor);
 	g.setNode('stemmed_tokens', {
 		label: 'Stemming',
 		clusterLabelPos: 'top',
@@ -185,21 +328,9 @@ function setStemmedTokens() {
 		clusterLabelPos: 'top',
 		style: 'fill: white'
 	});
-	g.setNode('no_special_character_token', {//clarear a etapa anterior
-		label: 'Removing Special Characters',
-		clusterLabelPos: 'top',
-		style: 'fill: white'
-	});
-	g.setNode('low_case', {//clarear a etapa anterior
-		label: 'Lower case',
-		clusterLabelPos: 'top',
-		style: 'fill: white'
-	});
-	g.setNode('tokenization', {//clarear a etapa anterior
-		label: 'Tokens',
-		clusterLabelPos: 'top',
-		style: 'fill: white'
-	});
+
+	tokens_with_removed_stopwords.forEach(setTokenNode);//clarear os nodes anteriores
+
 	// Set the parents to define which nodes belong to which cluster
 	g.setParent('stemmed_tokens', 'pre_processing');
 	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length + no_special_char_tokens.length + tokens_with_removed_stopwords.length;
@@ -233,13 +364,29 @@ function setTokenNode(item, index, arr) {
 		label: item
 	});
 }
+function setTokenNodeColor(item, index, arr) {
+	if (arr == lowcase_tokens) {
+		var index = index + tokens.length;
+	} else if (arr == no_special_char_tokens) {
+		var index = index + lowcase_tokens.length + tokens.length;
+	} else if (arr == tokens_with_removed_stopwords) {
+		var index = index + lowcase_tokens.length + tokens.length + no_special_char_tokens.length;
+	} else if (arr == stemmed_tokens) {
+		var index = index + lowcase_tokens.length + tokens.length + no_special_char_tokens.length + tokens_with_removed_stopwords.length;
+	}
+
+	g.setNode('token'.concat(index.toString()), {
+		label: item,
+		style: 'fill: #00ffd0'
+	});
+}
 function centerGraph() {
 	var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
 	svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
 	svg.attr("height", g.graph().height + 40);
 }
 
-function display(stepCallback){
+function display(stepCallback) {
 	var svg = d3.select("svg > g");//limpar renderizacao anterior
 	svg.selectAll("*").remove();
 	d3.selectAll("g.nodes")
@@ -296,58 +443,3 @@ var svg = d3.select("svg"),
 render(d3.select("svg g"), g);
 
 centerGraph();
-
-var svg1 = d3.select("svg");
-
-
-/*
-var button1 = svg1.append('rect');
-var button2 = svg1.append('rect');
-
-button1.attr('width', g.graph().width)//Primeiro botão p/ acionar
-	.attr('height', g.graph().height)
-	.attr('fill', 'blue')
-	.attr('x', (svg.attr("width") - g.graph().width) / 2)
-	.attr('y', (svg.attr("height") - g.graph().height) / 2)
-	.on('mousedown', function () {
-
-		var svg = d3.select("svg > g");//limpar renderizacao anterior
-		svg.selectAll("*").remove();
-
-		//var svg = d3.select("body").transition();
-
-		setNodesPreProcessing();//setNodesPartOne
-
-		render(d3.select("svg g"), g);
-
-		centerGraph();
-
-		button2.attr('width', button1.attr('width'))//Segundo botão p/ acionar
-			.attr('height', button1.attr('height'))
-			.attr('fill', 'blue')
-			.attr('x', button1.attr('x'))
-			.attr('y', g.graph().height - button1.attr('y')*3 -5)
-			.on('mousedown', function () {
-
-				var svg = d3.select("svg > g");//limpar renderizacao anterior
-				svg.selectAll("*").remove();
-
-				setNodesTokenization();
-				setLowcaseTokens();
-				setNoSpecialCharTokens();
-				setTokenWithoutStopwords();
-				setStemmedTokens();
-				render(d3.select("svg g"), g);
-
-				centerGraph();
-
-				d3.select(this).remove();
-			});
-		
-		button2.transition().attr('opacity', 0.1).duration(1000);
-		
-		d3.select(this).remove();
-	});
-
-button1.transition().attr('opacity', 0.1).duration(1000);
-*/

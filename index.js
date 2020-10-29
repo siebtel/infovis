@@ -1,25 +1,37 @@
 //-----------------------------------------------functions------------------------------------------------
-function setNodesPreProcessing() {//setNodesPartOne
+function setNodesPreProcessing(highlight) {//setNodesPartOne
 	// Here we're setting the nodes
-	g.setNode('sentence vector', {
-		label: original_sentence,
-		style: 'fill: #00ffd0'
-	});
+	if (highlight == true){
+		g.setNode('sentence vector', {
+			label: original_sentence,
+			style: 'fill: #00ffd0'
+		});
+	} else {
+		g.setNode('sentence vector', {
+			label: original_sentence,
+			style: 'fill: #C0C0C0; fill-opacity: 1'
+		});
+	}
 	g.setNode('pre_processing', {//
-		label: 'Pre Processing',
+		label: '',
+		labelStyle: "fill: black",
 		clusterLabelPos: 'top',
 		style: 'fill:white'
 	});
 	g.setNode('array_form', {
 		label: 'Sentence in array',
-		clusterLabelPos: 'bottom',
-		style: 'fill: #ffd47f'
+		labelStyle: "fill: white; font-size: 1em",
+		clusterLabelPos: 'top',
+		style: 'fill: #5f9488'
 	});
 	// Set the parents to define which nodes belong to which cluster
 	g.setParent('array_form', 'pre_processing');//
 	g.setParent('sentence vector', 'array_form');
 	// Set up edges, no special attributes.
-	g.setEdge('original sentence', 'sentence vector');//
+	g.setEdge('original sentence', 'sentence vector', {
+		style: "stroke: black",
+		arrowheadStyle: "fill: black",
+	});//
 	// Round the corners of the nodes
 	g.nodes().forEach(function (v) {
 		var node = g.node(v);
@@ -60,26 +72,33 @@ function setNodesPreProcessing() {//setNodesPartOne
 	g.removeNode('stemmed_tokens');
 
 }
-function setNodesTokenization() {//setNodesPartTwo
+function setNodesTokenization(highlight) {//setNodesPartTwo
 	//Removendo passo NodesPreProcessing - exclusao do seu anterior imediato
 	g.removeNode('sentence vector');
 	g.removeNode('pre_processing');
 	g.removeNode('array_form');
-	setNodesPreProcessing();//chamando novamente
-	g.setNode('sentence vector', {//clareando
-		label: original_sentence,
-		style: 'fill: white'
-	});
+	setNodesPreProcessing(false);//chamando novamente
 
-	g.setNode('pre_processing', {//clareando
-		label: 'Pre Processing',
+	g.setNode('pre_processing', {//
+		label: '',
+		labelStyle: "fill: black",
 		clusterLabelPos: 'top',
-		style: 'fill:white'
+		style: 'fill: black; fill-opacity: 0.5'
+	});
+	g.setNode('array_form', {
+		label: 'Sentence in array',
+		clusterLabelPos: 'top',
+		style: 'fill: black; fill-opacity: 0.5'
 	});
 
-	tokens.forEach(setTokenNodeColor);
+	if (highlight == true){
+		tokens.forEach(setTokenNodeColor, tokenHighlighted);
+	} else{
+		tokens.forEach(setTokenNodeColor, tokenNotHighlighted);
+	}
 	g.setNode('tokenization', {
 		label: 'Tokens',
+		labelStyle: "fill: white; font-size: 1em; z-index: -1",
 		clusterLabelPos: 'top',
 		style: 'fill: #5f9488'
 	});
@@ -91,7 +110,9 @@ function setNodesTokenization() {//setNodesPartTwo
 	}
 	// Set up edges, no special attributes.
 	for (i = 0; i < tokens.length; i++) {
-		g.setEdge('sentence vector', 'token'.concat(i.toString()));
+		g.setEdge('sentence vector', 'token'.concat(i.toString()), {
+			arrowheadStyle: arrowHeadColor,
+		});
 	}
 	// Round the corners of the nodes
 	g.nodes().forEach(function (v) {
@@ -126,28 +147,34 @@ function setNodesTokenization() {//setNodesPartTwo
 	}
 	g.removeNode('stemmed_tokens');
 }
-function setLowcaseTokens() {
+function setLowcaseTokens(highlight) {
 	//Removendo passo Tokenization, o passo anterior imediato
 	var i;
 	for (i = 0; i < tokens.length; i++) {
 		g.removeNode('token'.concat(i.toString()), 'tokenization');
 	}
 	g.removeNode('tokenization');
-	setNodesTokenization();//e recriando
+	setNodesTokenization(false);//e recriando
 
 	// Here we're setting the nodes
-	lowcase_tokens.forEach(setTokenNodeColor);
+
+	if (highlight == true){
+		lowcase_tokens.forEach(setTokenNodeColor, tokenHighlighted);
+	} else{
+		lowcase_tokens.forEach(setTokenNodeColor, tokenNotHighlighted);
+	}
 	g.setNode('low_case', {
 		label: 'Lower case',
+		labelStyle: "fill: white; font-size: 1em",
 		clusterLabelPos: 'top',
 		style: 'fill: #5f9488'
 	});
 	g.setNode('tokenization', {//clarear a etapa anterior
 		label: 'Tokens',
 		clusterLabelPos: 'top',
-		style: 'fill: white'
+		style: 'fill: black; fill-opacity: 0.5'
 	});
-	tokens.forEach(setTokenNode);//clarear os nodes anteriores
+	//tokens.forEach(setTokenNode);//clarear os nodes anteriores
 	
 	// Set the parents to define which nodes belong to which cluster
 	g.setParent('low_case', 'pre_processing');
@@ -157,7 +184,9 @@ function setLowcaseTokens() {
 	// Set up edges, no special attributes.
 	for (i = 0; i < tokens.length; i++) {
 		var lowcase_index = i + tokens.length;
-		g.setEdge('token'.concat(i.toString()), 'token'.concat(lowcase_index.toString()));
+		g.setEdge('token'.concat(i.toString()), 'token'.concat(lowcase_index.toString()),{
+			arrowheadStyle: arrowHeadColor
+		});
 	}
 	// Round the corners of the nodes
 	g.nodes().forEach(function (v) {
@@ -187,18 +216,24 @@ function setLowcaseTokens() {
 	g.removeNode('stemmed_tokens');
 
 }
-function setNoSpecialCharTokens() {
+function setNoSpecialCharTokens(highlight) {
 	//Removendo o passo anterior imediato 
 	for (i = tokens.length; i < tokens.length + lowcase_tokens.length; i++) {
 		g.removeNode('token'.concat(i.toString()), 'low_case');
 	}
 	g.removeNode('low_case');
-	setLowcaseTokens();//e recriando
+	setLowcaseTokens(false);//e recriando
 
 	// Here we're setting the nodes
-	no_special_char_tokens.forEach(setTokenNodeColor);
+
+	if (highlight == true){
+		no_special_char_tokens.forEach(setTokenNodeColor, tokenHighlighted);
+	} else{
+		no_special_char_tokens.forEach(setTokenNodeColor, tokenNotHighlighted);
+	}
 	g.setNode('no_special_character_token', {
 		label: 'Removing Special Characters',
+		labelStyle: "fill: white; font-size: 1em",
 		clusterLabelPos: 'top',
 		style: 'fill: #5f9488'
 	});
@@ -206,9 +241,8 @@ function setNoSpecialCharTokens() {
 	g.setNode('low_case', {//clarear a etapa anterior
 		label: 'Lower case',
 		clusterLabelPos: 'top',
-		style: 'fill: white'
+		style: 'fill: black; fill-opacity: 0.5'
 	});
-	lowcase_tokens.forEach(setTokenNode);//clarear os nodes anteriores
 
 	// Set the parents to define which nodes belong to which cluster
 	g.setParent('no_special_character_token', 'pre_processing');
@@ -224,7 +258,9 @@ function setNoSpecialCharTokens() {
 		}
 		var no_special_character_token_index = i + sum_of_nodes_of_tokens;
 		var lowcase_index = i + tokens.length;
-		g.setEdge('token'.concat(lowcase_index.toString()), 'token'.concat(no_special_character_token_index.toString()));
+		g.setEdge('token'.concat(lowcase_index.toString()), 'token'.concat(no_special_character_token_index.toString()),{
+			arrowheadStyle: arrowHeadColor
+		});
 	}
 	// Round the corners of the nodes
 	g.nodes().forEach(function (v) {
@@ -247,7 +283,7 @@ function setNoSpecialCharTokens() {
 	g.removeNode('stemmed_tokens');
 
 }
-function setTokenWithoutStopwords() {
+function setTokenWithoutStopwords(highlight) {
 	//removendo passo anterior
 	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length;
 	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + no_special_char_tokens.length; i++) {
@@ -255,21 +291,25 @@ function setTokenWithoutStopwords() {
 	}
 	g.removeNode('no_special_character_token');
 	//g.removeNode('no_special_char_tokens');
-	setNoSpecialCharTokens();//e recriando
+	setNoSpecialCharTokens(false);//e recriando
 
 	// Here we're setting the nodes
-	tokens_with_removed_stopwords.forEach(setTokenNodeColor);
+	if (highlight == true){
+		tokens_with_removed_stopwords.forEach(setTokenNodeColor, tokenHighlighted);
+	} else{
+		tokens_with_removed_stopwords.forEach(setTokenNodeColor, tokenNotHighlighted);
+	}
 	g.setNode('stopwords_removal', {
 		label: 'Stopwords Removal',
+		labelStyle: "fill: white; font-size: 1em",
 		clusterLabelPos: 'top',
 		style: 'fill: #5f9488'
 	});
 	g.setNode('no_special_character_token', {//clarear a etapa anterior
 		label: 'Removing Special Characters',
 		clusterLabelPos: 'top',
-		style: 'fill: white'
+		style: 'fill: black; fill-opacity: 0.5'
 	});
-	no_special_char_tokens.forEach(setTokenNode);//clarear os nodes anteriores
 
 	// Set the parents to define which nodes belong to which cluster
 	g.setParent('stopwords_removal', 'pre_processing');
@@ -291,7 +331,9 @@ function setTokenWithoutStopwords() {
 				count = count - 1;
 				var tokens_with_removed_stopwords_index = result + sum_of_nodes_of_tokens;
 				var no_special_character_token_index = i + lowcase_tokens.length + tokens.length;
-				g.setEdge('token'.concat(no_special_character_token_index.toString()), 'token'.concat(tokens_with_removed_stopwords_index.toString()));
+				g.setEdge('token'.concat(no_special_character_token_index.toString()), 'token'.concat(tokens_with_removed_stopwords_index.toString()),{
+					arrowheadStyle: arrowHeadColor
+				});
 			}
 		}
 	}
@@ -307,29 +349,33 @@ function setTokenWithoutStopwords() {
 	}
 	g.removeNode('stemmed_tokens');
 }
-function setStemmedTokens() {
+function setStemmedTokens(highlight) {
 	//removendo o passo anterior
 	var sum_of_nodes_of_tokens = tokens.length + lowcase_tokens.length + no_special_char_tokens.length;
 	for (i = sum_of_nodes_of_tokens; i < sum_of_nodes_of_tokens + tokens_with_removed_stopwords.length; i++) {
 		g.removeNode('token'.concat(i.toString()), 'stopwords_removal');
 	}
 	g.removeNode('stopwords_removal');
-	setTokenWithoutStopwords();//e recriando
+	setTokenWithoutStopwords(false);//e recriando
 
 	// Here we're setting the nodes
-	stemmed_tokens.forEach(setTokenNodeColor);
+	if (highlight == true){
+		stemmed_tokens.forEach(setTokenNodeColor, tokenHighlighted);
+	} else{
+		stemmed_tokens.forEach(setTokenNodeColor, tokenNotHighlighted);
+	}
 	g.setNode('stemmed_tokens', {
 		label: 'Stemming',
+		labelStyle: "fill: white; font-size: 1em",
 		clusterLabelPos: 'top',
 		style: 'fill: #5f9488'
 	});
 	g.setNode('stopwords_removal', {//clarear a etapa anterior
 		label: 'Stopwords Removal',
 		clusterLabelPos: 'top',
-		style: 'fill: white'
+		style: 'fill: black; fill-opacity: 0.5'
 	});
 
-	tokens_with_removed_stopwords.forEach(setTokenNode);//clarear os nodes anteriores
 
 	// Set the parents to define which nodes belong to which cluster
 	g.setParent('stemmed_tokens', 'pre_processing');
@@ -341,7 +387,9 @@ function setStemmedTokens() {
 	for (i = 0; i < stemmed_tokens.length; i++) {
 		var stemmed_tokens_index = i + sum_of_nodes_of_tokens;
 		var tokens_with_removed_stopwords_index = i + sum_of_nodes_of_tokens - tokens_with_removed_stopwords.length;
-		g.setEdge('token'.concat(tokens_with_removed_stopwords_index.toString()), 'token'.concat(stemmed_tokens_index.toString()));
+		g.setEdge('token'.concat(tokens_with_removed_stopwords_index.toString()), 'token'.concat(stemmed_tokens_index.toString()),{
+			arrowheadStyle: arrowHeadColor
+		});
 	}
 	// Round the corners of the nodes
 	g.nodes().forEach(function (v) {
@@ -374,10 +422,9 @@ function setTokenNodeColor(item, index, arr) {
 	} else if (arr == stemmed_tokens) {
 		var index = index + lowcase_tokens.length + tokens.length + no_special_char_tokens.length + tokens_with_removed_stopwords.length;
 	}
-
 	g.setNode('token'.concat(index.toString()), {
 		label: item,
-		style: 'fill: #00ffd0'
+		style: this.color
 	});
 }
 function centerGraph() {
@@ -386,12 +433,12 @@ function centerGraph() {
 	svg.attr("height", g.graph().height + 40);
 }
 
-function display(stepCallback) {
+function display(stepCallback, highlited) {
 	var svg = d3.select("svg > g");//limpar renderizacao anterior
 	svg.selectAll("*").remove();
 	d3.selectAll("g.nodes")
 		.attr('fill', "white")
-	stepCallback();
+	stepCallback(highlited);
 	render(d3.select("svg g"), g);
 	centerGraph();
 	d3.select(this).remove();
@@ -411,7 +458,10 @@ var stopwords = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'y
 	'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all',
 	'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's',
 	't', 'can', 'will', 'just', 'don', 'should', 'now'];
-
+//colors
+var tokenHighlighted = {color : 'fill: #00ffd0'};
+var tokenNotHighlighted = {color : 'fill: #C0C0C0; fill-opacity: 1'};
+var arrowHeadColor = "fill: #fff"
 // --------------------------------------------------------main------------------------------------------------------
 // Create the input graph
 var g = new dagreD3.graphlib.Graph({
@@ -423,7 +473,8 @@ var g = new dagreD3.graphlib.Graph({
 	});
 
 g.setNode('original sentence', {//Exemplo escolhido
-	label: original_sentence
+	label: original_sentence,
+	labelStyle: "font-size: 1em",
 });
 
 g.nodes().forEach(function (v) {

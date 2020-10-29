@@ -42,8 +42,8 @@ text {
   margin: 0 auto;
 }
 .edgePath path {
-  stroke: #333;
-  stroke-width: 1.5px;
+  stroke: rgb(253, 253, 253);
+  stroke-width: 2.0px;
 }
 
 svg {

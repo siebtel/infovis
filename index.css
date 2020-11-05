@@ -1,5 +1,5 @@
 body {
-  width: 1080px;
+  width: 960px;
   margin: 0 auto;
   color: #333;
   font-weight: 300;
@@ -24,27 +24,12 @@ section p {
   text-align: justify;
 }
 
-.clusters rect {
-  fill: #fff;
-  stroke: #999;
-  stroke-width: 1.5px;
-  margin: 0 auto;
-}
 text {
   font-weight: 300;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
-  font-size: 14px;
+  font-size: 20px;
 }
-.node rect {
-  stroke: #999;
-  fill: #fff;
-  stroke-width: 1.5px;
-  margin: 0 auto;
-}
-.edgePath path {
-  stroke: rgb(253, 253, 253);
-  stroke-width: 2.0px;
-}
+
 
 svg {
   border: 1px solid #ccc;
@@ -52,6 +37,11 @@ svg {
   margin: 0px auto;
 }
 
-pre {
-  border: 1px solid #ccc;
+
+.lowerCase {
+  text-transform: lowercase;
+}
+
+.colorir {
+  color: red;
 }

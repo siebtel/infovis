@@ -1,43 +1,29 @@
 <script src="https://d3js.org/d3.v5.js"></script>
-<script src="https://dagrejs.github.io/project/dagre/latest/dagre.js"></script>
-<script src="https://dagrejs.github.io/project/dagre-d3/latest/dagre-d3.js"></script>
-<head >
-    <h1>Pre-processing steps</h1>
-</head>
-<body>
-    <div id="option">
-        <input name="updateButton" 
-            type="button" 
-            value="Input" 
-            onclick="display(setNodesPreProcessing, true)" />
-        <input name="updateButton" 
-            type="button" 
-            value="Tokenization" 
-            onclick="display(setNodesTokenization, true)" />
-        <input name="updateButton" 
-            type="button" 
-            value="Lowcase" 
-            onclick="display(setLowcaseTokens, true)" />
-        <input name="updateButton" 
-            type="button" 
-            value="Special Characters" 
-            onclick="display(setNoSpecialCharTokens, true)" />
-        <input name="updateButton" 
-            type="button" 
-            value="Stopwords" 
-            onclick="display(setTokenWithoutStopwords, true)" />
-        <input name="updateButton" 
-            type="button" 
-            value="Stemming" 
-            onclick="display(setStemmedTokens, true)" />
 
-        </div>
-    <svg id="svg-canvas" width=1080 height=920></svg>
+<head>
+  <h1>Pre-processing steps</h1>
+</head>
+
+<body>
+  <div id="option">
+    <input name="updateButton" type="button" value="Tokenization" onclick="display(tokenization, true)" />
+    <input name="updateButton" type="button" value="Lowcase" onclick="display(lowercase, true)" />
+    <input name="updateButton" type="button" value="Special Characters" onclick="display(removingSpecial, true)" />
+    <input name="updateButton" type="button" value="Stopwords" onclick="display(stopwords, true)" />
+    <input name="updateButton" type="button" value="Stemming" onclick="display(stemming, true)" />
+
+  </div>
+
+  <svg id="svg-canvas" width=960 height=180>
+    <text id="sentence">"Computer Science is no more about computers than Astronomy is about telescopes." </text>
+    <text id="tokenization">[<a class="special">"</a><a class="low">C</a>omput<a class="ste">er</a>], [<a class="low">S</a>cienc<a class="ste">e</a>], <a class="removal">[is], [no], [more], [about], </a>[comput<a class="ste">ers</a>],<a class="removal"> [than], </a>[<a class="low">A</a>stronom<a class="ste">y</a>], <a class="removal">[is], [about], </a>[telescop<a class="ste">es</a><a class="special">."</a>]
+    </text>
+  </svg>
+  <section>
+    <p>An example of pre-processing in Natural Language Processing. This visualization shows examples of techniques used to transform raw text into just a text that we need.</p>
+  </section>
 </body>
 
-<section>
-    <p>An example of pre-processing in Natural Language Processing. This visualization shows examples of techniques used to transform raw text into just a text that we need.</p>
-</section>
 
 <link rel="stylesheet" href="index.css">
 <script src="index.js"></script>

@@ -1,5 +1,5 @@
 body {
-  width: 960px;
+  width: 1040px;
   margin: 0 auto;
   color: #333;
   font-weight: 300;
@@ -7,27 +7,49 @@ body {
 }
 
 h1 {
-  font-size: 3em;
-  font-weight: 300;
+  font-size: 1.5em;
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 0.2em;
+  font-weight: bold;
+  color: darkslateblue;
 }
 
 h2 {
-  font-size: 1.5em;
+  font-size: 1.2em;
+  text-align: center;
   font-weight: 300;
+  margin-top: 0.2em;
+  line-height: 1.25em;
+  color: darkslateblue;
 }
 
-section {
-  margin-bottom: 3em;
+h2 .description {
+  font-style: italic;
 }
 
-text {
+h3 {
+  font-size: 1em;
+  font-weight: 300;
+  line-height: 1.25em;
+}
+
+#section {
+  margin-top: 2em;
+  background-color: #dadada;
+  padding: 1em;
+}
+
+div#section {
+  text-align: justify;
+}
+
+div#sentence {
   font-weight: 300;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
   font-size: 20px;
-}
-
-section text {
-  text-align: justify;
+  text-align: center;
+  padding: 1.5em 0;
 }
 
 svg {
@@ -36,11 +58,87 @@ svg {
   margin: 0px auto;
 }
 
-
 .lowerCase {
   text-transform: lowercase;
 }
 
 .colorir {
   color: red;
+}
+
+/*  ============================  */
+
+.btn {
+  display: inline-block;
+  background: #e2e2e2;
+  border: 0;
+  line-height: 2.5em;
+  padding: 0 0 0 0.5em;
+  margin-bottom: 0.5em;
+  outline: none;
+  text-decoration: none;
+  color: #666;
+}
+
+.btn:active {
+  background: #ccc;
+}
+
+.btn:hover {
+  background: yellowgreen;
+}
+
+a {
+  margin-right: 0.3em;
+}
+
+a:active, a:hover {
+  outline-width: 0;
+}
+
+
+.btn .arrow {
+  display: inline-block;
+  line-height: 2.5em;
+  text-align: center;
+  background: #333;
+  color: white;
+  font-size: 1em;
+  width: 2.5em;
+  transition: margin 200ms;
+  margin-left: 0.75em;
+}
+
+.btn:hover .arrow {
+  margin-left: 1.25em;
+  background-color: #262626;
+}
+
+/* background-color: darken(#333,5%); */
+
+.btn .arrow:active {
+  background: #ccc;
+}
+
+.btn-info .arrow {
+  background-color: indianred;
+}
+
+.btn-info .arrow:hover {
+  background-color: desaturate(darken(indianred,5%),5%);
+}
+
+.btn-learn .arrow  {
+  background-color: salmon;
+}
+
+.btn-learn .arrow:hover {
+  background-color: desaturate(darken(salmon,5%),5%);
+}
+
+
+/* Remove Focus*/ 
+
+button::-moz-focus-inner {
+    border: none;
 }

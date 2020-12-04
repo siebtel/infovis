@@ -1,27 +1,28 @@
 <script src="https://d3js.org/d3.v5.js"></script>
 
 <head>
-  <h1>Pre-processing steps</h1>
+  <h1>ArSENaL-Pro</h1>
+  <h2>(<span class="description">Artful Stepwise Explanation of Natural Language Processing</span>)</h2>
 </head>
+
+<h3>Welcome to ArSENaL-Pro (Artful Stepwise Explanation of Natural Language Processing). The purpose of ArSENaL-Pro is to help you grasp the intincities of Natural Language Processing in a gradual way. Please feel free to interact with the visualization that follows.</h3>
 
 <body>
   <div id="option">
-    <input name="updateButton" type="button" value="Tokenization" onclick="display(tokenization, true)" />
-    <input name="updateButton" type="button" value="Lowcase" onclick="display(lowercase, true)" />
-    <input name="updateButton" type="button" value="Special Characters" onclick="display(removingSpecial, true)" />
-    <input name="updateButton" type="button" value="Stopwords" onclick="display(stopwords, true)" />
-    <input name="updateButton" type="button" value="Stemming" onclick="display(stemming, true)" />
-
+    <a class="btn" href="#" onclick="display(tokenization, true)">Tokenization<span class="arrow">❯</span></a>
+    <a class="btn" href="#" onclick="display(lowercase, true)">Lowercase<span class="arrow">❯</span></a>
+    <a class="btn" href="#" onclick="display(removingSpecial, true)">Special Characters<span class="arrow">❯</span></a>
+    <a class="btn" href="#" onclick="display(stopwords, true)">Stopwords<span class="arrow">❯</span></a>
+    <a class="btn" href="#" onclick="display(stemming, true)">Stemming<span class="arrow">❯</span></a>
   </div>
 
-  <svg id="svg-canvas" width=960 height=180>
-    <text id="sentence">"Computer Science is no more about computers than Astronomy is about telescopes." </text>
-    <text id="tokenization">[<a class="special">"</a><a class="low">C</a>omput<a class="ste">er</a>], [<a class="low">S</a>cienc<a class="ste">e</a>], <a class="removal">[is], [no], [more], [about], </a>[comput<a class="ste">ers</a>],<a class="removal"> [than], </a>[<a class="low">A</a>stronom<a class="ste">y</a>], <a class="removal">[is], [about], </a>[telescop<a class="ste">es</a><a class="special">."</a>]
-    </text>
-  </svg>
-  <section>
-    <text id="explanation"></text>
-  </section>
+  <div id="sentence">"Computer Science is no more about computers than Astronomy is about telescopes."</div>
+    <!-- span id="tokenization">
+      [<a class="special">"</a><a class="low">C</a>omput<a class="ste">er</a>], [<a class="low">S</a>cienc<a class="ste">e</a>], <a class="removal">[is], [no], [more], [about], </a>[comput<a class="ste">ers</a>],<a class="removal"> [than], </a>[<a class="low">A</a>stronom<a class="ste">y</a>], <a class="removal">[is], [about], </a>[telescop<a class="ste">es</a><a class="special">."</a>]
+    </span -->
+  <div id="section">
+    <span id="explanation"></span>
+  </div>
 </body>
 
 

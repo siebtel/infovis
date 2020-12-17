@@ -18,41 +18,36 @@ function tokenization() {
 
   //d3.select("#sentence").text().replaceAll(/(\],)+?, (\[)+?/g, "");
   // replace logi
-  var tokenized = "[" + d3.select("#sentence").text().replaceAll(" ", "], [") + "]";
+  var tokenized = "[" + d3.select("#sentence").text().replaceAll(" ", "],[") + "]";
   d3.select("#sentence").transition().style("opacity", 0).duration(500);
   d3.select("#sentence").transition().delay(500).text(tokenized);
   d3.select("#sentence").transition().delay(500).style("opacity", 1).duration(500);
-  //d3.select("#sentence").transition().style("opacity", 0).duration(1000);
-  //d3.select("#tokenization").transition().delay(999).attr("opacity", 1).duration(1000);
 }
 
 function lowercase() {
-  //tokenization();
   set_explanation(2);
-  d3.selectAll(".low").transition().style("fill", "red").duration(1000);
-  d3.select("#tokenization").transition().delay(2000).attr("class", "lowerCase");
-  //d3.selectAll(".low").transition().delay(2000).style("fill", "black").duration(1000);
+ 
+  d3.select("#sentence").transition().delay(2000).attr("class", "lowerCase");
 }
 
 function removingSpecial() {
-  tokenization();
   set_explanation(3);
-  d3.selectAll(".special").transition().style("fill", "red").duration(1000);
-  d3.selectAll(".special").transition().delay(1000).style("opacity", 0).duration(1000);
+  var removespec = d3.select("#sentence").text().replaceAll('"', '').replaceAll('.', '');
+  d3.select("#sentence").transition().delay(500).text(removespec);
 }
 
 function stopwords() {
-  tokenization();
   set_explanation(4);
-  d3.selectAll(".removal").transition().style("fill", "red").duration(1000);
-  d3.selectAll(".removal").transition().delay(1000).style("opacity", 0).duration(1000);
+  var removeword = d3.select("#sentence").text().replaceAll('[is],[no],[more],[about],', '')
+  .replaceAll('[than],', '').replaceAll('[is],[about],', '');
+  d3.select("#sentence").transition().delay(500).text(removeword);
 }
 
 function stemming() {
-  tokenization();
   set_explanation(5);
-  d3.selectAll(".ste").transition().style("fill", "red").duration(1000);
-  d3.selectAll(".ste").transition().delay(1000).style("opacity", 0).duration(1000);
+  var stem = d3.select("#sentence").text().replaceAll('er]', ']').replaceAll('ers]', ']')
+  .replaceAll('y', '').replaceAll('e]', ']').replaceAll('es]', ']');
+  d3.select("#sentence").transition().delay(500).text(stem);
 }
 
 //##########################################################Globals##########################################################

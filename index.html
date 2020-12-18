@@ -1,4 +1,5 @@
 <script src="https://d3js.org/d3.v5.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <head>
   <h1>ArSENaL-Pro</h1>
@@ -16,13 +17,24 @@
     <a class="btn" href="#" onclick="display(stemming, true)">Stemming<span class="arrow">❯</span></a>
   </div>
 
-  <div id="sentence">"Computer Science is no more about computers than Astronomy is about telescopes."</div>
-    <!-- span id="tokenization">
-      [<a class="special">"</a><a class="low">C</a>omput<a class="ste">er</a>], [<a class="low">S</a>cienc<a class="ste">e</a>], <a class="removal">[is], [no], [more], [about], </a>[comput<a class="ste">ers</a>],<a class="removal"> [than], </a>[<a class="low">A</a>stronom<a class="ste">y</a>], <a class="removal">[is], [about], </a>[telescop<a class="ste">es</a><a class="special">."</a>]
-    </span -->
-  <div id="section">
-    <span id="explanation"></span>
-  </div>
+	<div id="sentence">"Computer Science is no more about computers than Astronomy is about telescopes."</div>
+	<div id="tokenization">
+		<span class='vector-element'><span class="special">"</span><span class="low">C</span>omput<span class="ste">er</span></span>
+		<span class='vector-element'><span class="low">S</span>cienc<span class="ste">e</span></span>
+		<span class="removal"><span class='vector-element'>is</span>
+		<span class='vector-element'>no</span>
+		<span class='vector-element'>more</span>
+		<span class='vector-element'>about</span></span>
+		<span class='vector-element'>comput<span class="ste">ers</span></span>
+		<span class="removal"><span class='vector-element'>than</span></span>
+		<span class='vector-element'><span class="low">A</span>stronom<span class="ste">y</span></span>
+		<span class="removal"><span class='vector-element'>is</span>
+		<span class='vector-element'>about</span></span>
+		<span class='vector-element'>telescop<span class="ste">es</span><span class="special">."</span></span>
+	</div>
+	<div id="section">
+		<span id="explanation"></span>
+	</div>
 </body>
 
 

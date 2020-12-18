@@ -50,18 +50,43 @@ div#sentence {
   font-size: 20px;
   text-align: center;
   padding: 1.5em 0;
+  display: block;
 }
 
+div#tokenization {
+  font-weight: 300;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+  font-size: 20px;
+  text-align: center;
+  padding: 0.82em 0;
+  display: none;
+  opacity: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.appears {
+  display: block;
+}
+
+.visuallyhidden {
+  opacity: 0;
+}
 svg {
-  border: 1px solid #ccc;
+  border: 0px solid #ffffff;
   overflow: visible;
-  margin: 0px auto;
+  margin: 0px;
 }
 
 .lowerCase {
   text-transform: lowercase;
 }
 
+.upperCase {
+  text-transform: uppercase;
+}
 .colorir {
   color: red;
 }
@@ -141,4 +166,77 @@ a:active, a:hover {
 
 button::-moz-focus-inner {
     border: none;
+}
+
+.highlighted-background {
+  background-color: #fafad2d9;
+  }
+
+  /*remove highlighted*/
+.highlighted-background-rem {
+  background-color: white;
+  }
+
+span#_1 {
+  padding: 5px 10px;
+  border: 1px solid black;
+  line-height: 2.5em;
+}
+
+span#_2 {
+  padding: 5px 10px;
+  border: 1px solid black;
+  line-height: 2.5em;
+}
+
+span#_3 {
+  padding: 5px 10px;
+  border: 1px solid black;
+  line-height: 2.5em;
+}
+span#_4 {
+  padding: 5px 10px;
+  border: 1px solid black;
+  line-height: 2.5em;
+}
+span#_5 {
+  padding: 5px 10px;
+  border: 1px solid black;
+  line-height: 2.5em;
+}
+span#_6 {
+  padding: 5px 10px;
+  border: 1px solid black;
+  line-height: 2.5em;
+}
+
+span#_7 {
+  padding: 5px 10px;
+  border: 1px solid black;
+  line-height: 2.5em;
+}
+span#_8 {
+  padding: 5px 10px;
+  border: 1px solid black;
+  line-height: 2.5em;
+}
+span#_9 {
+  padding: 5px 10px;
+  border: 1px solid black;
+  line-height: 2.5em;
+}
+span#_10 {
+  padding: 5px 10px;
+  border: 1px solid black;
+  line-height: 2.5em;
+}
+span#_11 {
+  padding: 5px 10px;
+  border: 1px solid black;
+  line-height: 2.5em;
+}
+span#_12 {
+  padding: 5px 10px;
+  border: 1px solid black;
+  line-height: 2.5em;
 }

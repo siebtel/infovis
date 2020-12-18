@@ -1,4 +1,5 @@
 <script src="https://d3js.org/d3.v5.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <head>
   <h1>ArSENaL-Pro</h1>
@@ -16,10 +17,24 @@
     <a class="btn" href="#" onclick="display(stemming, true)">Stemming<span class="arrow">❯</span></a>
   </div>
 
-  <div id="sentence">"Computer Science is no more about computers than Astronomy is about telescopes."</div>
-  <div id="section">
-    <span id="explanation"></span>
-  </div>
+	<div id="sentence">"Computer Science is no more about computers than Astronomy is about telescopes."</div>
+	<div id="tokenization">
+		<span class='vector-element' id="_1"><span class="special">"</span><span id="low">C</span>omput<span class="ste">er</span></span>
+		<span class='vector-element' id="_2"><span id="low">S</span>cienc<span class="ste">e</span></span>
+		<span class="removal"><span class='vector-element' id="_3">is</span>
+		<span class='vector-element' id="_4">no</span>
+		<span class='vector-element' id="_5">more</span>
+		<span class='vector-element' id="_6">about</span></span>
+		<span class='vector-element' id="_7">comput<span class="ste">ers</span></span>
+		<span class="removal"><span class='vector-element' id="_8">than</span></span>
+		<span class='vector-element' id="_9"><span id="low">A</span>stronom<span class="ste">y</span></span>
+		<span class="removal"><span class='vector-element' id="_10">is</span>
+		<span class='vector-element' id="_11">about</span></span>
+		<span class='vector-element' id="_12">telescop<span class="ste">es</span><span class="special">."</span></span>
+	</div>
+	<div id="section">
+		<span id="explanation"></span>
+	</div>
 </body>
 
 

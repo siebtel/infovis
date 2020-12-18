@@ -7,17 +7,17 @@ const STEMMING_STATE = 5;
 
 //-----------------------------------------------functions------------------------------------------------
 function resetFunctions(state){
+  //remove all highlighteds
+  var i;
+  for (i = 0; i < 12; i++) {
+    var index = i + 1;
+    d3.selectAll("#_".concat(index.toString())).attr("class", "highlighted-background-rem");
+  }
+  
   if (state == TOKENIZATION_STATE || state == LOWERCASE_STATE) {
     //uppercase
     d3.selectAll("#low").attr("class", "upperCase");
     d3.selectAll("#low").style("color", "black");
-
-    //remove all highlighteds
-    var i;
-    for (i = 0; i < 12; i++) {
-      var index = i + 1;
-      d3.selectAll("#_".concat(index.toString())).attr("class", "highlighted-background-rem");
-    }
 
     d3.selectAll(".special").style("color", "black");
     d3.selectAll(".special").style("opacity", 1);
